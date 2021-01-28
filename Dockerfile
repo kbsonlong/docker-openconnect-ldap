@@ -1,30 +1,32 @@
 FROM debian:latest
 
-LABEL maintainer="@MorganOnBass" \
-      maintainer="morgan@mackechnie.uk" \
+LABEL maintainer="@cdryzun" \
+      maintainer="amoaloas@gmail.com" \
       version=0.1 \
       description="Openconnect server with libpam-ldap for AD authentication"
 
-# Forked from MarkusMcNugen for AD Auth
-# Forked from TommyLau for unRAID
+COPY docker-entrypoint.sh /
+COPY ocserv /config
+COPY pam_ldap /etc/default/pam_ldap 
 
-VOLUME /config
-
-# Install ocserv
-#RUN apk add --update bash rsync ipcalc sipcalc ca-certificates rsyslog logrotate runit
-
-RUN apt-get update && apt-get -y install ocserv libnss-ldap iptables procps rsync sipcalc ca-certificates
-RUN rm /etc/pam_ldap.conf && touch /config/pam_ldap.conf && ln -s /config/pam_ldap.conf /etc/pam_ldap.conf
-
-ADD ocserv /etc/default/ocserv
-ADD pam_ldap /etc/default/pam_ldap
+RUN \cp -a /config /etc/default/ocserv \
+    && apt-get update && apt-get install -y \
+            ocserv \
+            libnss-ldap \
+            iptables \
+            procps \
+            rsync \
+            sipcalc \
+            ca-certificates \
+            gnutls-bin \
+    && rm -rf /var/lib/apt/lists/* /etc/pam_ldap.conf \
+    && touch /config/pam_ldap.conf \
+    && ln -s /config/pam_ldap.conf /etc/pam_ldap.conf \
+    && chmod a+x /docker-entrypoint.sh
 
 WORKDIR /config
 
-COPY docker-entrypoint.sh /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
+EXPOSE 443/tcp \
+      443/udp
 
-EXPOSE 443/tcp
-EXPOSE 443/udp
-CMD ["ocserv", "-c", "/config/ocserv.conf", "-f"]
-#CMD ["/bin/bash"]
+ENTRYPOINT ["/docker-entrypoint.sh", "ocserv", "-c", "/config/ocserv.conf", "-f"]
