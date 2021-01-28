@@ -38,7 +38,7 @@ services:
       - "443:443/udp"
     environment:
       LISTEN_PORT: 443
-      TUNNEL_MODE: 'split_include'
+      TUNNEL_MODE: 'split-include'
       TUNNEL_ROUTES: '192.168.1.0/24, 192.168.69.0/24'
       DNS_SERVERS: 192.168.1.1
       SPLIT_DNS_DOMAINS: 'internal.domain.com'
