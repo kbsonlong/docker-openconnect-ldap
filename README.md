@@ -118,9 +118,19 @@ After a user successfully logins to the VPN a message will be logged in the dock
 *Example of logoff message:*
 ```
 [info] User bob Disconnected - Bytes In: 175856 Bytes Out: 4746819 Duration:63
+
+```
+## In Kubernetes start the vpn service like so:
+```bash
+cd example/kubernetes
+
+kubectl apply -f .
 ```
 
+> LocalPV is used in the example, directory you need to create localPV.
+
 # Issues
+
 If you are having issues with this container please submit an issue on GitHub.
 Please provide logs, docker version and other information that can simplify reproducing the issue.
 Using the latest stable verison of Docker is always recommended. Support for older version is on a best-effort basis.
