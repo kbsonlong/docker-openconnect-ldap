@@ -13,7 +13,7 @@ OpenConnect VPN server is an SSL VPN server that is secure, small, fast and conf
 * Base: Debian Latest
 * Latest OpenConnect Server 0.12.2
 * LDAP/Active Directory authentication with libpam-ldap
-* Size: 167MB
+* Size: 150MB
 * Customizing the DNS servers used for queries over the VPN
 * Supports tunneling all traffic over the VPN or tunneling only specific routes via split-include
 * Config directory can be mounted to a host directory for persistence 
