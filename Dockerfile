@@ -7,7 +7,7 @@ LABEL maintainer="@cdryzun" \
 
 COPY docker-entrypoint.sh /
 COPY ocserv /config
-COPY pam_ldap /etc/default/pam_ldap 
+COPY pam_ldap /etc/default/pam_ldap
 
 RUN \cp -a /config /etc/default/ocserv \
     && apt-get update && apt-get install -y \
