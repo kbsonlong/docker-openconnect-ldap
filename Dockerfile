@@ -29,4 +29,4 @@ WORKDIR /config
 EXPOSE 443/tcp \
       443/udp
 
-ENTRYPOINT ["/docker-entrypoint.sh", "ocserv", "-c", "/config/ocserv.conf", "-f"]
+ENTRYPOINT ["/docker-entrypoint.sh", "ocserv", "-c", "/config/ocserv.conf", "-f"] 
