@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.16.0 (0c01309)
+  labels:
+    io.kompose.service: ocserv
+  name: ocserv
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      io.kompose.service: ocserv
+  template:
+    metadata:
+      labels:
+        io.kompose.service: ocserv
+    spec:
+      containers:
+      - env:
+        - name: BASEDN
+          value: dc=example,dc=com
+        - name: BINDDN
+          value: CN=ocserv,CN=Users,DC=example,DC=com
+        - name: BINDPW
+          value: aSuperSecurePassword
+        - name: CA_CN
+          value: VPN CA
+        - name: CA_DAYS
+          value: "9999"
+        - name: CA_ORG
+          value: OCSERV
+        - name: CLIENTNET
+          value: 192.168.248.0
+        - name: CLIENTNETMASK
+          value: 255.255.255.128
+        - name: DNS_SERVERS
+          value: 192.168.1.1
+        - name: LDAPURI
+          value: ldap://192.168.1.1/
+        - name: LISTEN_PORT
+          value: "443"
+        - name: PAM_LOGIN_ATTRIBUTE
+          value: userPrincipalName
+        - name: SEARCHSCOPE
+          value: sub
+        - name: SPLIT_DNS_DOMAINS
+          value: internal.domain.com
+        - name: SRV_CN
+          value: vpn.example.com
+        - name: SRV_DAYS
+          value: "9999"
+        - name: SRV_ORG
+          value: Example Company
+        - name: TUNNEL_MODE
+          value: split-include
+        - name: TUNNEL_ROUTES
+          value: 10.1.0.0/25, 192.168.69.0/24
+        image: yangzun/docker-openconnect-ldap:latest
+        name: ocserv
+        ports:
+        - containerPort: 443
+        - containerPort: 443
+          protocol: UDP
+        resources: {}
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+          privileged: true
+        volumeMounts:
+        - mountPath: /config/
+          name: ocserv-claim0
+      restartPolicy: Always
+      volumes:
+      - name: ocserv-claim0
+        persistentVolumeClaim:
+          claimName: ocserv-claim0

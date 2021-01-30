@@ -1,0 +1,20 @@
+﻿apiVersion: v1
+kind: Service
+metadata:
+  name: ocserv-service-nodeport
+  labels:
+    io.kompose.service: ocserv
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+  - name: vpn-tcp
+    # nodePort: 30021
+    port: 443
+    protocol: TCP
+    targetPort: 443
+  selector:
+    io.kompose.service: ocserv
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}
