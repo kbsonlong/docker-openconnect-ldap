@@ -69,8 +69,8 @@ fi
 if [ ${LISTEN_PORT} != "443" ]; then
 	echo "$(date) [info] Modifying the listening port"
 	#Find TCP/UDP line numbers and use sed to replace the lines
-	TCPLINE = $(grep -rne 'tcp-port =' ocserv.conf | grep -Eo '^[^:]+')
-	UDPLINE = $(grep -rne 'udp-port =' ocserv.conf | grep -Eo '^[^:]+')
+	TCPLINE=$(grep -rne 'tcp-port =' ocserv.conf | grep -Eo '^[^:]+')
+	UDPLINE=$(grep -rne 'udp-port =' ocserv.conf | grep -Eo '^[^:]+')
 	sed -i "$(TCPLINE)s/.*/tcp-port = ${LISTEN_PORT}/" /config/ocserv.conf
 	sed -i "$(UDPLINE)s/.*/tcp-port = ${LISTEN_PORT}/" /config/ocserv.conf
 fi
