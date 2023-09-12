@@ -1,7 +1,7 @@
 FROM debian:latest
 
-LABEL maintainer="@cdryzun" \
-      maintainer="amoaloas@gmail.com" \
+LABEL maintainer="@kbsonlong" \
+      maintainer="kbsonlong@gmail.com" \
       version=0.1 \
       description="Openconnect server with libpam-ldap for AD authentication"
 
@@ -10,7 +10,7 @@ COPY ocserv /config
 COPY pam_ldap /etc/default/pam_ldap
 
 RUN \cp -a /config /etc/default/ocserv \
-    && apt-get update && apt-get install -y \
+    &&  apt-get update && apt-get install -y \
             ocserv \
             libnss-ldap \
             iptables \
@@ -18,7 +18,7 @@ RUN \cp -a /config /etc/default/ocserv \
             rsync \
             sipcalc \
             ca-certificates \
-            gnutls-bin \
+            gnutls-bin\
     && rm -rf /var/lib/apt/lists/* /etc/pam_ldap.conf \
     && touch /config/pam_ldap.conf \
     && ln -s /config/pam_ldap.conf /etc/pam_ldap.conf \

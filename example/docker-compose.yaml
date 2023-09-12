@@ -1,9 +1,20 @@
 version: "3"
 
 services:
+  openldap:
+    container_name: openldap
+    image: osixia/openldap:1.5.0
+    ports:
+      - "389:389"
+      - "636:636"
+    environment:
+      LDAP_ORGANISATION: along
+      LDAP_DOMAIN: alongparty.cn
+      LDAP_ADMIN_PASSWORD: admin
+      LDAP_CONFIG_PASSWORD: config
   ocserv:
     container_name: ocserv
-    image: morganonbass/ocserv-ldap:latest
+    image: longzs/docker-openconnect-ldap:latest
     ports:
       - "443:443/tcp"
       - "443:443/udp"
@@ -11,21 +22,21 @@ services:
       LISTEN_PORT: 443
       TUNNEL_MODE: 'split-include'
       TUNNEL_ROUTES: '10.1.0.0/25, 192.168.69.0/24'
-      DNS_SERVERS: 192.168.1.1
+      DNS_SERVERS: 192.168.64.17
       SPLIT_DNS_DOMAINS: 'internal.domain.com'
       CLIENTNET: 192.168.248.0
       CLIENTNETMASK: 255.255.255.128
-      BASEDN: 'dc=example,dc=com'
-      LDAPURI: 'ldap://192.168.1.1/'
-      BINDDN: 'CN=ocserv,CN=Users,DC=example,DC=com'
+      BASEDN: 'dc=alongparty,dc=cn'
+      LDAPURI: 'ldap://192.168.64.17/'
+      BINDDN: 'CN=ocserv,CN=Users,dc=alongparty,dc=cn'
       BINDPW: 'aSuperSecurePassword'
       SEARCHSCOPE: 'sub'
       PAM_LOGIN_ATTRIBUTE: 'userPrincipalName'
       CA_CN: 'VPN CA'
       CA_ORG: 'OCSERV'
       CA_DAYS: 9999 
-      SRV_CN: 'vpn.example.com'
-      SRV_ORG: 'Example Company'
+      SRV_CN: 'vpn.alongparty.cn'
+      SRV_ORG: 'Along Company'
       SRV_DAYS: 9999
     volumes:
       - './config/:/config/'
